@@ -14,6 +14,7 @@ public class StateSleep extends StateAdapter {
 
     @Override
     public void onEnterState(ContextClockradio context) {
+        context.ui.statusTextview.setText("Sleep state");
         mContext = context;
         mContext.ui.setDisplayText(String.valueOf(sleepTimer[index]));
         mContext.ui.turnOnLED(3);
@@ -58,7 +59,7 @@ public class StateSleep extends StateAdapter {
             @Override
             protected void onPostExecute(Object o) {
                 System.out.println("5 seconds idle, closing sleep state");
-                mContext.setState(new StateStandby(mContext.getTime()));
+                mContext.setState(new StateStandby(mContext.getTime(), null, sleepTimer[index]));
             }
         }.execute();
     }

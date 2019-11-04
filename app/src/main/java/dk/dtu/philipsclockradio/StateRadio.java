@@ -24,6 +24,7 @@ public class StateRadio extends StateAdapter {
 
     @Override
     public void onEnterState(ContextClockradio context) {
+        context.ui.statusTextview.setText("Radio state");
         mContext = context;
         mContext.ui.setDisplayText("FM");
         System.out.println("Current passband: FM");
@@ -170,7 +171,7 @@ public class StateRadio extends StateAdapter {
 
     @Override
     public void onLongClick_Power(ContextClockradio context) {
-        mContext.setState(new StateStandby(mContext.getTime()));
+        mContext.setState(new StateStandby(mContext.getTime(), null, 0));
     }
 
 }
