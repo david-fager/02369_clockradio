@@ -5,7 +5,7 @@ public class StateRadioSave extends StateAdapter {
     private ContextClockradio mContext;
     private int saveIndex = 0;
     private String currentStation;
-    private String[] savedStations = new String[9];
+    private String[] savedStations = new String[10];
     private boolean fm;
 
     public StateRadioSave(String currentStation, boolean fm) {
@@ -31,9 +31,9 @@ public class StateRadioSave extends StateAdapter {
             System.out.println("[" + i + "] " + savedStations[i]);
         }
         if (fm) {
-            context.setState(new StateRadioFM());
+            context.setState(new StateRadioFM(savedStations));
         } else {
-            context.setState(new StateRadioAM());
+            context.setState(new StateRadioAM(savedStations));
         }
     }
 

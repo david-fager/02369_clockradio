@@ -44,7 +44,6 @@ public class StateStandby extends StateAdapter {
 
     @Override
     public void onEnterState(ContextClockradio context) {
-        context.ui.statusTextview.setText("Standby state");
         //Lokal context oprettet for at Runnable kan få adgang
         mContext = context;
 
@@ -62,11 +61,12 @@ public class StateStandby extends StateAdapter {
 
     @Override
     public void onClick_Power(ContextClockradio context) {
-        context.setState(new StateRadioFM());
+        context.setState(new StateRadioFM(null));
     }
 
     @Override
     public void onClick_Sleep(ContextClockradio context) {
+        stopClock();
         context.setState(new StateSleep());
     }
 
@@ -77,7 +77,6 @@ public class StateStandby extends StateAdapter {
             context.setState(new StateAlarmSet());
         } else {
             ALHeld = "AL1";
-            context.ui.statusTextview.setText("Awaiting hold of AL2");
             System.out.println("User is 'holding' AL1, waiting for AL2");
         }
     }
@@ -89,7 +88,6 @@ public class StateStandby extends StateAdapter {
             context.setState(new StateAlarmSet());
         } else {
             ALHeld = "AL2";
-            context.ui.statusTextview.setText("Awaiting hold of AL1");
             System.out.println("User is 'holding' AL2, waiting for AL1");
         }
     }

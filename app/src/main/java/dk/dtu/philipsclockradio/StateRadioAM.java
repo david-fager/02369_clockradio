@@ -12,23 +12,30 @@ public class StateRadioAM extends StateAdapter {
     private int[] amStationUpper = {650, 989, 1357, 1700};
     private String[] amStationName = {"DRP3", "R100", "MYRO", "R247"};
     private String currentStation = "";
+    private String[] savedStations;
 
-    public StateRadioAM() {}
+    public StateRadioAM(String[] savedStations) {
+        if (savedStations != null) {
+            this.savedStations = savedStations;
+        } else {
+            this.savedStations = new String[10];
+        }
+    }
 
     @Override
     public void onEnterState(ContextClockradio context) {
-        context.ui.statusTextview.setText("Radio state");
         mContext = context;
         mContext.ui.setDisplayText("AM");
         System.out.println("Current passband: AM");
         waitASecond = true;
         handler.postDelayed(displayDelay, 1000);
+
     }
 
     @Override
     public void onClick_Power(ContextClockradio context) {
         if (!waitASecond) {
-            context.setState(new StateRadioFM());
+            context.setState(new StateRadioFM(savedStations));
         }
     }
 
@@ -95,6 +102,10 @@ public class StateRadioAM extends StateAdapter {
 
     @Override
     public void onLongClick_Power(ContextClockradio context) {
+        System.out.println("Before exiting radio, here is a list of the final saved stations:");
+        for (int i = 0; i < savedStations.length; i++) {
+            System.out.println("[" + i + "] " + savedStations[i]);
+        }
         mContext.setState(new StateStandby(mContext.getTime(), null, 0));
     }
 

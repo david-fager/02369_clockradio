@@ -14,7 +14,6 @@ public class StateSleep extends StateAdapter {
 
     @Override
     public void onEnterState(ContextClockradio context) {
-        context.ui.statusTextview.setText("Sleep state");
         mContext = context;
         mContext.ui.setDisplayText(String.valueOf(sleepTimer[index]));
         mContext.ui.turnOnLED(3);

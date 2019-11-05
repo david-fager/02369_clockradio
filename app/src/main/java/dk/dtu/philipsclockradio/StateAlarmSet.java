@@ -18,13 +18,13 @@ public class StateAlarmSet extends StateAdapter {
 
     @Override
     public void onEnterState(ContextClockradio context) {
-        context.ui.statusTextview.setText("Alarm setting mode");
         calendar.setTime(context.getTime());
         alarmTime = calendar.getTime();
         System.out.println("Alarm time: " + alarmTime);
         System.out.println("Actual time: " + context.getTime());
         context.ui.turnOnTextBlink();
 
+        // From StateStandby so the clock keeps going while alarm is being set
         mContext = context;
         mTime = context.getTime();
         context.updateDisplayTime();
