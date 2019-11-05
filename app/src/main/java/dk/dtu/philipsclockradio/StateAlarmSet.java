@@ -1,32 +1,38 @@
 package dk.dtu.philipsclockradio;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class StateAlarmSet extends StateAdapter {
 
-    private Date mTime;
+    private Calendar calendar = Calendar.getInstance();
+    private Date alarmTime;
     private String ALPressed = "";
 
-    public StateAlarmSet(Date mTime) {
-        this.mTime = mTime;
-    }
+    public StateAlarmSet() {}
 
     @Override
     public void onEnterState(ContextClockradio context) {
         context.ui.statusTextview.setText("Alarm setting mode");
+        calendar.setTime(context.getTime());
+        alarmTime = calendar.getTime();
+        System.out.println("Alarm time: " + alarmTime.getTime());
+        System.out.println("Actual time: " + context.getTime());
         context.ui.turnOnTextBlink();
     }
 
     @Override
     public void onClick_Hour(ContextClockradio context) {
-        mTime.setTime(mTime.getTime() + 3600000);
-        context.ui.setDisplayText(mTime.toString().substring(11,16));
+        alarmTime.setTime(alarmTime.getTime() + 3600000);
+        System.out.println("Alarm time: " + alarmTime.getTime()); // TODO: Mangler fiks
+        System.out.println("Actual time: " + context.getTime());
     }
 
     @Override
     public void onClick_Min(ContextClockradio context) {
-        mTime.setTime(mTime.getTime() + 60000);
-        context.ui.setDisplayText(mTime.toString().substring(11,16));
+        alarmTime.setTime(alarmTime.getTime() + 60000);
+        System.out.println("Alarm time: " + alarmTime.getTime());
+        System.out.println("Actual time: " + context.getTime());
     }
 
     @Override
