@@ -106,7 +106,7 @@ public class StateRadioAM extends StateAdapter {
         for (int i = 0; i < savedStations.length; i++) {
             System.out.println("[" + i + "] " + savedStations[i]);
         }
-        mContext.setState(new StateStandby(mContext.getTime(), null, 0));
+        mContext.setState(new StateStandby(mContext.getTime(), null));
     }
 
 }

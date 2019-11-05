@@ -1,8 +1,8 @@
 package dk.dtu.philipsclockradio;
 
-public class StateAlarmStates extends StateAdapter {
+public class StateAlarmRinging extends StateAdapter {
 
-    public StateAlarmStates() {}
+    public StateAlarmRinging() {}
 
     @Override
     public void onEnterState(ContextClockradio context) {

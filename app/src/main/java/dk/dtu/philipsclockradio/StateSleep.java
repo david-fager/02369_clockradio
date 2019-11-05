@@ -58,7 +58,7 @@ public class StateSleep extends StateAdapter {
             @Override
             protected void onPostExecute(Object o) {
                 System.out.println("5 seconds idle, closing sleep state");
-                mContext.setState(new StateStandby(mContext.getTime(), null, sleepTimer[index]));
+                mContext.setState(new StateStandby(mContext.getTime(), null));
             }
         }.execute();
     }

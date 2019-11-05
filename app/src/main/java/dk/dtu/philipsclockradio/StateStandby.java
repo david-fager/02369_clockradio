@@ -8,13 +8,14 @@ public class StateStandby extends StateAdapter {
     private Date mTime, alarmTime;
     private static Handler mHandler = new Handler();
     private ContextClockradio mContext;
-    private int sleep;
-    private int alarmState = 0; // 0 is muted, 1 is radio, 2 is buzzer
+    private int alarmType = 0; // 0 is muted, 1 is radio, 2 is buzzer
 
-    StateStandby(Date time, Date alarmTime, int sleep){
+    StateStandby(Date time, Date alarmTime){
         mTime = time;
-        this.alarmTime = alarmTime;
-        this.sleep = sleep;
+        if (alarmTime != null) {
+            this.alarmTime = alarmTime;
+            System.out.println("StateStandby ready for alarm at: " + alarmTime);
+        }
     }
 
     //Opdaterer hvert 60. sekund med + 1 min til tiden
@@ -27,9 +28,7 @@ public class StateStandby extends StateAdapter {
                 mTime.setTime(currentTime + 60000);
                 mContext.setTime(mTime);
                 System.out.println("Time changed to: " + mTime);
-                if (alarmTime != null) {
-                    compareAlarmAndTime();
-                }
+                compareAlarmAndTime();
             } finally {
                 mHandler.postDelayed(mSetTime, 60000);
             }
@@ -76,17 +75,59 @@ public class StateStandby extends StateAdapter {
     }
 
     private void compareAlarmAndTime() {
+        if (alarmTime != null && alarmType != 0) {
+            if (mTime.compareTo(alarmTime) == 0) {
 
+            }
+        }
     }
 
     @Override
     public void onClick_AL1(ContextClockradio context) {
-
+        if (alarmTime != null) {
+            if (++alarmType > 2) {
+                alarmType = 0;
+            }
+            if (alarmType == 0) {
+                context.ui.turnOffLED(1);
+                context.ui.turnOffLED(2);
+                System.out.println("Alarm is muted");
+            } else if (alarmType == 1) {
+                context.ui.turnOnLED(1);
+                context.ui.turnOffLED(2);
+                System.out.println("Alarm is on radio");
+            } else if (alarmType == 2) {
+                context.ui.turnOnLED(2);
+                context.ui.turnOffLED(1);
+                System.out.println("Alarm is on buzzer");
+            }
+        } else {
+            System.out.println("Alarm is not set");
+        }
     }
 
     @Override
     public void onClick_AL2(ContextClockradio context) {
-
+        if (alarmTime != null) {
+            if (++alarmType > 2) {
+                alarmType = 0;
+            }
+            if (alarmType == 0) {
+                context.ui.turnOffLED(1);
+                context.ui.turnOffLED(2);
+                System.out.println("Alarm is muted");
+            } else if (alarmType == 1) {
+                context.ui.turnOnLED(1);
+                context.ui.turnOffLED(2);
+                System.out.println("Alarm is on radio");
+            } else if (alarmType == 2) {
+                context.ui.turnOnLED(2);
+                context.ui.turnOffLED(1);
+                System.out.println("Alarm is on buzzer");
+            }
+        } else {
+            System.out.println("Alarm is not set");
+        }
     }
 
     @Override
