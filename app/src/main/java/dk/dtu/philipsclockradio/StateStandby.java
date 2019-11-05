@@ -73,6 +73,7 @@ public class StateStandby extends StateAdapter {
     @Override
     public void onLongClick_AL1(ContextClockradio context) {
         if(ALHeld.equals("AL2")) {
+            stopClock();
             context.setState(new StateAlarmSet());
         } else {
             ALHeld = "AL1";
@@ -84,6 +85,7 @@ public class StateStandby extends StateAdapter {
     @Override
     public void onLongClick_AL2(ContextClockradio context) {
         if(ALHeld.equals("AL1")) {
+            stopClock();
             context.setState(new StateAlarmSet());
         } else {
             ALHeld = "AL2";
