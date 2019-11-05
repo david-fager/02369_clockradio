@@ -8,8 +8,8 @@ public class StateStandby extends StateAdapter {
     private Date mTime, alarmTime;
     private static Handler mHandler = new Handler();
     private ContextClockradio mContext;
-    private String ALHeld = "";
     private int sleep;
+    private int alarmState = 0; // 0 is muted, 1 is radio, 2 is buzzer
 
     StateStandby(Date time, Date alarmTime, int sleep){
         mTime = time;
@@ -26,6 +26,10 @@ public class StateStandby extends StateAdapter {
                 long currentTime = mTime.getTime();
                 mTime.setTime(currentTime + 60000);
                 mContext.setTime(mTime);
+                System.out.println("Time changed to: " + mTime);
+                if (alarmTime != null) {
+                    compareAlarmAndTime();
+                }
             } finally {
                 mHandler.postDelayed(mSetTime, 60000);
             }
@@ -61,6 +65,7 @@ public class StateStandby extends StateAdapter {
 
     @Override
     public void onClick_Power(ContextClockradio context) {
+        stopClock();
         context.setState(new StateRadioFM(null));
     }
 
@@ -70,26 +75,30 @@ public class StateStandby extends StateAdapter {
         context.setState(new StateSleep());
     }
 
+    private void compareAlarmAndTime() {
+
+    }
+
+    @Override
+    public void onClick_AL1(ContextClockradio context) {
+
+    }
+
+    @Override
+    public void onClick_AL2(ContextClockradio context) {
+
+    }
+
     @Override
     public void onLongClick_AL1(ContextClockradio context) {
-        if(ALHeld.equals("AL2")) {
-            stopClock();
-            context.setState(new StateAlarmSet());
-        } else {
-            ALHeld = "AL1";
-            System.out.println("User is 'holding' AL1, waiting for AL2");
-        }
+        stopClock();
+        context.setState(new StateAlarmSet());
     }
 
     @Override
     public void onLongClick_AL2(ContextClockradio context) {
-        if(ALHeld.equals("AL1")) {
-            stopClock();
-            context.setState(new StateAlarmSet());
-        } else {
-            ALHeld = "AL2";
-            System.out.println("User is 'holding' AL2, waiting for AL1");
-        }
+        stopClock();
+        context.setState(new StateAlarmSet());
     }
 
 }
