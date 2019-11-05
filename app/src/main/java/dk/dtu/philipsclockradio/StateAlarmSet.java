@@ -16,7 +16,7 @@ public class StateAlarmSet extends StateAdapter {
         context.ui.statusTextview.setText("Alarm setting mode");
         calendar.setTime(context.getTime());
         alarmTime = calendar.getTime();
-        System.out.println("Alarm time: " + alarmTime.getTime());
+        System.out.println("Alarm time: " + alarmTime);
         System.out.println("Actual time: " + context.getTime());
         context.ui.turnOnTextBlink();
     }
@@ -24,15 +24,17 @@ public class StateAlarmSet extends StateAdapter {
     @Override
     public void onClick_Hour(ContextClockradio context) {
         alarmTime.setTime(alarmTime.getTime() + 3600000);
-        System.out.println("Alarm time: " + alarmTime.getTime()); // TODO: Mangler fiks
+        System.out.println("Alarm time: " + alarmTime);
         System.out.println("Actual time: " + context.getTime());
+        context.ui.setDisplayText(alarmTime.toString().substring(11,16));
     }
 
     @Override
     public void onClick_Min(ContextClockradio context) {
         alarmTime.setTime(alarmTime.getTime() + 60000);
-        System.out.println("Alarm time: " + alarmTime.getTime());
+        System.out.println("Alarm time: " + alarmTime);
         System.out.println("Actual time: " + context.getTime());
+        context.ui.setDisplayText(alarmTime.toString().substring(11,16));
     }
 
     @Override
