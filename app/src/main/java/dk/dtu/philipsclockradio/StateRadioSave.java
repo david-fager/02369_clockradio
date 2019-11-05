@@ -31,9 +31,9 @@ public class StateRadioSave extends StateAdapter {
             System.out.println("[" + i + "] " + savedStations[i]);
         }
         if (fm) {
-            context.setState(new StateRadioFM(savedStations));
+            context.setState(new StateRadioFM(savedStations, false));
         } else {
-            context.setState(new StateRadioAM(savedStations));
+            context.setState(new StateRadioAM(savedStations, false));
         }
     }
 

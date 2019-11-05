@@ -65,7 +65,7 @@ public class StateStandby extends StateAdapter {
     @Override
     public void onClick_Power(ContextClockradio context) {
         stopClock();
-        context.setState(new StateRadioFM(null));
+        context.setState(new StateRadioFM(null, true));
     }
 
     @Override
@@ -77,7 +77,8 @@ public class StateStandby extends StateAdapter {
     private void compareAlarmAndTime() {
         if (alarmTime != null && alarmType != 0) {
             if (mTime.compareTo(alarmTime) == 0) {
-
+                stopClock();
+                mContext.setState(new StateAlarmRinging(alarmType));
             }
         }
     }
