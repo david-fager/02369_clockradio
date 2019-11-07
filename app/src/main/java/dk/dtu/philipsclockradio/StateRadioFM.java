@@ -2,6 +2,8 @@ package dk.dtu.philipsclockradio;
 
 import android.os.Handler;
 
+import java.util.Date;
+
 public class StateRadioFM extends StateAdapter {
 
     private ContextClockradio mContext;
@@ -14,14 +16,20 @@ public class StateRadioFM extends StateAdapter {
     private String currentStation = "";
     private String[] savedStations;
     private boolean setStatus;
+    private Date alarmTime;
+    private int alarmType = 0; // 0 is muted, 1 is radio, 2 is buzzer
 
-    public StateRadioFM(String[] savedStations, boolean setStatus) {
+    public StateRadioFM(String[] savedStations, boolean setStatus, Date alarmTime, int alarmType) {
         if (savedStations != null) {
             this.savedStations = savedStations;
         } else {
             this.savedStations = new String[10];
         }
         this.setStatus = setStatus;
+        if (alarmTime != null) {
+            this.alarmTime = alarmTime;
+        }
+        this.alarmType = alarmType;
     }
 
     @Override
@@ -39,7 +47,7 @@ public class StateRadioFM extends StateAdapter {
     @Override
     public void onClick_Power(ContextClockradio context) {
         if (!waitASecond) {
-            context.setState(new StateRadioAM(savedStations, false));
+            context.setState(new StateRadioAM(savedStations, false, alarmTime, alarmType));
         }
     }
 
@@ -89,8 +97,6 @@ public class StateRadioFM extends StateAdapter {
                     currentStation = fmStationName[i];
                     System.out.println("Found station: " + fmStationName + " on frequency: " + fmFreq);
                     break;
-                } else {
-                    mContext.ui.setDisplayText(String.valueOf(fmFreq));
                 }
             }
         }
@@ -99,7 +105,7 @@ public class StateRadioFM extends StateAdapter {
     @Override
     public void onLongClick_Preset(ContextClockradio context) {
         if (!currentStation.equals("")) {
-            context.setState(new StateRadioSave(currentStation, true));
+            context.setState(new StateRadioSave(currentStation, true, alarmTime, savedStations, alarmType));
         } else {
             System.out.println("Held 'preset' but was not tuned into a station");
         }
@@ -112,7 +118,7 @@ public class StateRadioFM extends StateAdapter {
             System.out.println("[" + i + "] " + savedStations[i]);
         }
         context.ui.toggleRadioPlaying();
-        mContext.setState(new StateStandby(mContext.getTime(), null));
+        mContext.setState(new StateStandby(mContext.getTime(), alarmTime, savedStations, alarmType));
     }
 
 }

@@ -9,13 +9,22 @@ public class StateStandby extends StateAdapter {
     private static Handler mHandler = new Handler();
     private ContextClockradio mContext;
     private int alarmType = 0; // 0 is muted, 1 is radio, 2 is buzzer
+    private String[] savedStations;
 
-    StateStandby(Date time, Date alarmTime){
+    StateStandby(Date time) {
+        mTime = time;
+    }
+
+    StateStandby(Date time, Date alarmTime, String[] savedStations, int alarmType){
         mTime = time;
         if (alarmTime != null) {
             this.alarmTime = alarmTime;
             System.out.println("StateStandby ready for alarm at: " + alarmTime);
         }
+        if (savedStations != null) {
+            this.savedStations = savedStations;
+        }
+        this.alarmType = alarmType;
     }
 
     //Opdaterer hvert 60. sekund med + 1 min til tiden
@@ -58,27 +67,23 @@ public class StateStandby extends StateAdapter {
 
     @Override
     public void onLongClick_Preset(ContextClockradio context) {
-        stopClock();
-        context.setState(new StateSetTime());
+        context.setState(new StateSetTime(alarmTime, savedStations, alarmType));
     }
 
     @Override
     public void onClick_Power(ContextClockradio context) {
-        stopClock();
-        context.setState(new StateRadioFM(null, true));
+        context.setState(new StateRadioFM(savedStations, true, alarmTime, alarmType));
     }
 
     @Override
     public void onClick_Sleep(ContextClockradio context) {
-        stopClock();
-        context.setState(new StateSleep());
+        context.setState(new StateSleep(alarmTime, savedStations, alarmType));
     }
 
     private void compareAlarmAndTime() {
         if (alarmTime != null && alarmType != 0) {
             if (mTime.compareTo(alarmTime) == 0) {
-                stopClock();
-                mContext.setState(new StateAlarmRinging(alarmType));
+                mContext.setState(new StateAlarmRinging(alarmType, alarmTime, savedStations));
             }
         }
     }
@@ -133,14 +138,16 @@ public class StateStandby extends StateAdapter {
 
     @Override
     public void onLongClick_AL1(ContextClockradio context) {
-        stopClock();
-        context.setState(new StateAlarmSet());
+        context.setState(new StateAlarmSet(savedStations, alarmType));
     }
 
     @Override
     public void onLongClick_AL2(ContextClockradio context) {
-        stopClock();
-        context.setState(new StateAlarmSet());
+        context.setState(new StateAlarmSet(savedStations, alarmType));
     }
 
+    @Override
+    public void onExitState(ContextClockradio context) {
+        stopClock();
+    }
 }

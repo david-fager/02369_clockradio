@@ -3,14 +3,27 @@ package dk.dtu.philipsclockradio;
 import android.os.AsyncTask;
 import android.os.SystemClock;
 
+import java.util.Date;
+
 public class StateSleep extends StateAdapter {
 
     private ContextClockradio mContext;
     private int[] sleepTimer = {120, 90, 60, 30, 15, 0};
     private int index = 0;
     private AsyncTask idle;
+    private Date alarmTime;
+    private String[] savedStations;
+    private int alarmType = 0; // 0 is muted, 1 is radio, 2 is buzzer
 
-    StateSleep() {}
+    StateSleep(Date alarmTime, String[] savedStations, int alarmType) {
+        if (alarmTime != null) {
+            this.alarmTime = alarmTime;
+        }
+        if (savedStations != null) {
+            this.savedStations = savedStations;
+        }
+        this.alarmType = alarmType;
+    }
 
     @Override
     public void onEnterState(ContextClockradio context) {
@@ -58,7 +71,7 @@ public class StateSleep extends StateAdapter {
             @Override
             protected void onPostExecute(Object o) {
                 System.out.println("5 seconds idle, closing sleep state");
-                mContext.setState(new StateStandby(mContext.getTime(), null));
+                mContext.setState(new StateStandby(mContext.getTime(), alarmTime, savedStations, alarmType));
             }
         }.execute();
     }

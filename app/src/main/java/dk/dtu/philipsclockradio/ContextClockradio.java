@@ -23,7 +23,7 @@ public class ContextClockradio {
         }
 
         //Når app'en starter, så går vi ind i Standby State
-        currentState = new StateStandby(mTime, null);
+        currentState = new StateStandby(mTime);
         currentState.onEnterState(this);
     }
 

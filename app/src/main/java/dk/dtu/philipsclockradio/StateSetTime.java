@@ -5,8 +5,19 @@ import java.util.Date;
 
 public class StateSetTime extends StateAdapter {
     Date mTime;
+    private Date alarmTime;
+    private String[] savedStations;
+    private int alarmType = 0; // 0 is muted, 1 is radio, 2 is buzzer
 
-    StateSetTime(){}
+    StateSetTime(Date alarmTime, String[] savedStations, int alarmType){
+        if (alarmTime != null) {
+            this.alarmTime = alarmTime;
+        }
+        if (savedStations != null) {
+            this.savedStations = savedStations;
+        }
+        this.alarmType = alarmType;
+    }
 
     @Override
     public void onEnterState(ContextClockradio context) {
@@ -38,7 +49,7 @@ public class StateSetTime extends StateAdapter {
 
     @Override
     public void onClick_Preset(ContextClockradio context) {
-        context.setState(new StateStandby(context.getTime(), null));
+        context.setState(new StateStandby(context.getTime(), alarmTime, savedStations, alarmType));
     }
 
 }

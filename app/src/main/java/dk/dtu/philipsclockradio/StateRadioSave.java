@@ -1,5 +1,7 @@
 package dk.dtu.philipsclockradio;
 
+import java.util.Date;
+
 public class StateRadioSave extends StateAdapter {
 
     private ContextClockradio mContext;
@@ -7,10 +9,19 @@ public class StateRadioSave extends StateAdapter {
     private String currentStation;
     private String[] savedStations = new String[10];
     private boolean fm;
+    private Date alarmTime;
+    private int alarmType = 0; // 0 is muted, 1 is radio, 2 is buzzer
 
-    public StateRadioSave(String currentStation, boolean fm) {
+    public StateRadioSave(String currentStation, boolean fm, Date alarmTime, String[] savedStations, int alarmType) {
         this.currentStation = currentStation;
         this.fm = fm;
+        if (alarmTime != null) {
+            this.alarmTime = alarmTime;
+        }
+        if (savedStations != null) {
+            this.savedStations = savedStations;
+        }
+        this.alarmType = alarmType;
     }
 
     @Override
@@ -31,9 +42,9 @@ public class StateRadioSave extends StateAdapter {
             System.out.println("[" + i + "] " + savedStations[i]);
         }
         if (fm) {
-            context.setState(new StateRadioFM(savedStations, false));
+            context.setState(new StateRadioFM(savedStations, false, alarmTime, alarmType));
         } else {
-            context.setState(new StateRadioAM(savedStations, false));
+            context.setState(new StateRadioAM(savedStations, false, alarmTime, alarmType));
         }
     }
 

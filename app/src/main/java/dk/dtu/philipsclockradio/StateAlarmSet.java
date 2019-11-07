@@ -8,8 +8,15 @@ public class StateAlarmSet extends StateAdapter {
 
     private Calendar calendar = Calendar.getInstance();
     private Date alarmTime;
+    private String[] savedStations;
+    private int alarmType = 0; // 0 is muted, 1 is radio, 2 is buzzer
 
-    public StateAlarmSet() {}
+    public StateAlarmSet(String[] savedStations, int alarmType) {
+        if (savedStations != null) {
+            this.savedStations = savedStations;
+        }
+        this.alarmType = alarmType;
+    }
 
     @Override
     public void onEnterState(ContextClockradio context) {
@@ -38,12 +45,12 @@ public class StateAlarmSet extends StateAdapter {
 
     @Override
     public void onClick_AL1(ContextClockradio context) {
-        context.setState(new StateStandby(context.getTime(), alarmTime));
+        context.setState(new StateStandby(context.getTime(), alarmTime, savedStations, alarmType));
     }
 
     @Override
     public void onClick_AL2(ContextClockradio context) {
-        context.setState(new StateStandby(context.getTime(), alarmTime));
+        context.setState(new StateStandby(context.getTime(), alarmTime, savedStations, alarmType));
     }
 
     @Override
